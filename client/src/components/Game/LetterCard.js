@@ -1,39 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-function LetterCard() {
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const lettersArray = letters.split("");
+function LetterCard({ socket, cardId }) {
+    const [letter, setLetter] = useState(""); //The letter for this card
 
-    const randomIndex = (array) => {
-        return Math.floor(Math.random() * array.length);
-    };
+    useEffect(() => {
+        socket.on("letter_generated", (genLetter) => {
+            // Update the letter for this card if the cardId matches
+            if (genLetter[cardId]) {
+                setLetter(genLetter[cardId]);
+            }
+        });
 
-    const randomLetters = () => {
-        let threeLetters = [];
-        for (let i = 0; i < 3; i++) {
-            threeLetters.push(lettersArray.at(randomIndex(lettersArray)));
-        }
-        console.log(threeLetters);
-        return threeLetters;
-    };
+        // Clean up the event listener when the component unmounts
+        return () => {
+            socket.off("letter_generated");
+        };
+    }, [socket, cardId]); // Removed 'letter' from the dependency array
 
-    const [threeLetters, setThreeLetters] = useState(randomLetters()); //List of 3 random letters
-
-    const handleRandomLetters = () => {
-        setThreeLetters(randomLetters());
+    const handleRandomLetter = () => {
+        // Emit the 'generate_letters' event to request a new letter for this card
+        socket.emit("generate_letter", cardId);
     };
 
     return (
         <div>
             <h1>LetterCard</h1>
-            <button onClick={handleRandomLetters}>
-                Press me for 3 letters
-            </button>
-            <div className="letter-card">
-                {threeLetters.map((letter, index) => (
-                    <p key={index}>{letter}</p>
-                ))}
-            </div>
+            <button onClick={handleRandomLetter}>Press me for a letter</button>
+            <div className="letter-card">{letter}</div>
         </div>
     );
 }

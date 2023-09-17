@@ -1,6 +1,6 @@
 import React from "react";
 
-function CategoryCard() {
+function CategoryCard({socket}) {
     //Initialize all Categories and Hover Elements
     const allCategories = [
         "A Boy's Name",
@@ -121,9 +121,14 @@ function CategoryCard() {
         "Holiday Activities",
         "European Capitals",
     ];
-    
 
-    return <div>CategoryCard</div>;
+
+
+    return (
+        <div>
+            <h1>CategoryCard</h1>
+        </div>
+    );
 }
 
 export default CategoryCard;

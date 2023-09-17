@@ -18,12 +18,19 @@ const io = new Server(httpServer, {
     },
 });
 
+// Variables to store data on the server
 const rooms = {}; // Object to store users in each room
 const ready = {}; // Object to store users' ready status
-
 const roomStates = {}; // Object to store the state of each room (whether it is in the lobby or in-game)
-
 const socketToUser = {}; // Object to store socket.id to username mapping
+const letterCards = {}; // Object to store the letter card value for each room
+
+// Array of letters for random letter choosing for the client LetterCard component
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""); // Array of letters for random letter choosing
+// Aux function to generate a random index
+const randomIndex = (array) => {
+    return Math.floor(Math.random() * array.length);
+};
 
 io.on("connection", (socket) => {
     console.log("User connected: ", socket.id);
@@ -100,13 +107,24 @@ io.on("connection", (socket) => {
             rooms[roomId] = rooms[roomId].filter(
                 (roomUser) => roomUser !== user
             );
-            
+
             //Remove the socket id to user mapping
             delete socketToUser[socket.id];
 
             io.to(roomId).emit("user_left", rooms[roomId]);
         }
         socket.leave(roomId);
+    });
+
+    socket.on("generate_letter", (cardId) => {
+        let genLetter = letters[randomIndex(letters)];
+
+        // Associate the generated letter with the card's ID
+        letterCards[cardId] = genLetter;
+
+        console.log(letterCards);
+
+        io.emit("letter_generated", letterCards);
     });
 });
 
