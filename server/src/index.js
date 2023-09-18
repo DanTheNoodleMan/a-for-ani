@@ -310,24 +310,26 @@ io.on("connection", (socket) => {
         io.emit("start_vote", answers);
     });
 
-    // socket.on("vote_submitted", ( vote, answer, users ) => {
-    //     // Record the player's vote for the given answer
-    //     votes[answer] = votes[answer] || { true: 0, false: 0 };
-    //     votes[answer][vote]++;
+    socket.on("vote_submitted", ({ vote, answer, users }) => {
+        console.log("vote: " + vote + " answer: " + answer + " users: " + users)
+        // Record the player's vote for the given answer
+        votes[answer] = votes[answer] || { true: 0, false: 0 };
+        votes[answer][vote]++;
 
-    //     // Add the player to the set of players who have voted
-    //     playersVoted.add(socket.id);
+        // Add the player to the set of players who have voted
+        playersVoted.add(socket.id);
 
-    //     if(playersVoted.size === users.length){
-    //         const voteResults = calculateVoteResults(votes, answer);
+        if(playersVoted.size === users.length){
+            const voteResults = calculateVoteResults(votes, answer);
 
-    //         console.log(voteResults)
-    //         io.emit("vote_outcome", voteResults);
+            console.log(voteResults)
+            io.emit("vote_outcome", voteResults);
 
-    //         // Reset the votes and playersVoted for the next round
-    //         resetVotesAndPlayersVoted();
-    //     }
-    // });
+            // Reset the votes and playersVoted for the next round
+            resetVotesAndPlayersVoted();
+        }
+    });
+
 });
 
 httpServer.listen(3001, () => {

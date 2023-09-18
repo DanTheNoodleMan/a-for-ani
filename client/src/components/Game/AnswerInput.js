@@ -10,7 +10,6 @@ function AnswerInput({ socket }) {
         setAnswer("");
     };
 
-
     return (
         <div className="answer-input">
             <form className="form" onSubmit={handleSendAnswer}>
