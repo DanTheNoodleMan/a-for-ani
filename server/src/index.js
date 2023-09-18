@@ -24,12 +24,55 @@ const ready = {}; // Object to store users' ready status
 const roomStates = {}; // Object to store the state of each room (whether it is in the lobby or in-game)
 const socketToUser = {}; // Object to store socket.id to username mapping
 const letterCards = {}; // Object to store the letter card value for each room
+const answers = []; // Array to store objects of the answers submitted by each player
+const votes = {}; // Object to store the votes for each answer
+const playersVoted = new Set(); // Set to keep track of players who have voted
 
 // Array of letters for random letter choosing for the client LetterCard component
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""); // Array of letters for random letter choosing
 // Aux function to generate a random index
 const randomIndex = (array) => {
     return Math.floor(Math.random() * array.length);
+};
+
+// Calculate the vote results and determine the outcome
+const calculateVoteResults = (votes, answer) => {
+    const voteData = votes[answer];
+    if (!voteData) {
+        // Handle the case where there are no votes for this answer
+        return {
+            answer,
+            accepted: false, // Reject the answer since there are no votes
+        };
+    }
+
+    const totalVotes = voteData.true + voteData.false;
+    const yesPercentage = (voteData.true / totalVotes) * 100;
+
+    if (yesPercentage > 51) {
+        // Accept the answer if more than 51% voted "Yes"
+        return {
+            answer,
+            accepted: true,
+        };
+    } else {
+        // Reject the answer if 51% or fewer voted "Yes"
+        return {
+            answer,
+            accepted: false,
+        };
+    }
+};
+
+// Reset the votes and playersVoted for the next round
+const resetVotesAndPlayersVoted = () => {
+    Object.keys(votes).forEach((answer) => {
+        // Clear the votes for each answer
+        votes[answer] = { true: 0, false: 0 };
+    });
+
+    // Clear the set of players who have voted
+    playersVoted.clear();
 };
 
 // Array of all categories for the client CategoryCard component
@@ -250,7 +293,7 @@ io.on("connection", (socket) => {
 
     socket.on("generate_category", () => {
         let genCategory = [];
-        for(let i = 0; i < 3; i++){
+        for (let i = 0; i < 3; i++) {
             genCategory.push(allCategories[randomIndex(allCategories)]);
         }
 
@@ -258,6 +301,33 @@ io.on("connection", (socket) => {
 
         io.emit("category_generated", genCategory);
     });
+
+    socket.on("answer_submitted", (answer) => {
+        answers.push(answer);
+        console.log(answers);
+
+        //send the answer to all clients
+        io.emit("start_vote", answers);
+    });
+
+    // socket.on("vote_submitted", ( vote, answer, users ) => {
+    //     // Record the player's vote for the given answer
+    //     votes[answer] = votes[answer] || { true: 0, false: 0 };
+    //     votes[answer][vote]++;
+
+    //     // Add the player to the set of players who have voted
+    //     playersVoted.add(socket.id);
+
+    //     if(playersVoted.size === users.length){
+    //         const voteResults = calculateVoteResults(votes, answer);
+
+    //         console.log(voteResults)
+    //         io.emit("vote_outcome", voteResults);
+
+    //         // Reset the votes and playersVoted for the next round
+    //         resetVotesAndPlayersVoted();
+    //     }
+    // });
 });
 
 httpServer.listen(3001, () => {
