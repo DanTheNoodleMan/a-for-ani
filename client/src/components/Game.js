@@ -5,7 +5,7 @@ import Timer from "./Game/Timer"
 
 function Game({ socket }) {
     return (
-        <div>
+        <div className="game">
             <h1>Game</h1>
             <Timer/>
             <GameBoard socket={socket}/>
