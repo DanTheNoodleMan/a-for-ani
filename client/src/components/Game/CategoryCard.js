@@ -19,14 +19,16 @@ function CategoryCard({ socket }) {
         socket.emit("generate_category");
     };
     return (
-        <div>
-            <h1>CategoryCard</h1>
+        <div className="categorycard">
             <button onClick={handleRandomCategory}>
                 Press me for a Category
             </button>
-            {category.map((cat, index) => (
-                <div key={index} className="category-card">{cat}</div>
-            ))}
+            <div className="category-container">
+                {category.map((cat, index) => (
+                    <div key={index} className={`category category-${index + 1}`}>{cat}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

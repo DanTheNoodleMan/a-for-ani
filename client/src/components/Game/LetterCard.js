@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../../styles/game.css";
 
 function LetterCard({ socket, cardId }) {
     const [letter, setLetter] = useState(""); //The letter for this card
@@ -17,16 +18,26 @@ function LetterCard({ socket, cardId }) {
         };
     }, [socket, cardId]); // Removed 'letter' from the dependency array
 
+    
+
     const handleRandomLetter = () => {
         // Emit the 'generate_letters' event to request a new letter for this card
         socket.emit("generate_letter", cardId);
     };
 
-    return (
-        <div>
-            <h1>LetterCard</h1>
+    useEffect(() => {
+        handleRandomLetter();
+    }, []);
+
+    return cardId === 3 ? (
+        <div className="lettercard mid">
             <button onClick={handleRandomLetter}>Press me for a letter</button>
             <div className="letter-card">{letter}</div>
+        </div>
+    ) : (
+        <div className="lettercard">
+            <button onClick={handleRandomLetter}>Press me for a letter</button>
+            <div className="letter">{letter}</div>
         </div>
     );
 }

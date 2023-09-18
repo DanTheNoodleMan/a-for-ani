@@ -1,0 +1,74 @@
+.game{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.gameboard{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    align-items: center;
+    justify-content: center;
+    gap:2em;
+    height: 30em;
+    width: 80%;
+    margin-top: 5em;
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid #323232;
+    box-shadow: 4px 4px #323232;
+    box-sizing: content-box;
+}
+
+.lettercard, .categorycard{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 2px solid #323232;
+    box-shadow: 4px 4px #323232;
+    padding:1em;
+}
+
+.categorycard{
+    background-color: var(--primary);
+}
+
+.categorycard button {
+    z-index: 1;
+}
+
+.lettercard{
+    background-color: var(--secondary);
+}
+
+.mid{
+    grid-column: 2;
+}
+
+.category-container{
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    gap:1em;
+    text-align: center;
+    height: auto;
+}
+
+.category-1{
+    flex:1;
+}
+
+.category-2{
+    flex:1;
+}
+
+.category-3{
+    flex:1;
+}
