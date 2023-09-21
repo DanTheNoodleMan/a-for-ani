@@ -3,7 +3,11 @@
     import { FaThumbsUp } from "react-icons/fa";
     import { FaThumbsDown } from "react-icons/fa";
 
+<<<<<<< HEAD
     function VoteModal({ answer, socket, users, user, userAnswers }) {
+=======
+    function VoteModal({ answer, socket, users }) {
+>>>>>>> 1c759bed16d03654143d63addefc7a59c3fef30f
 
         const handleVote = (vote) => {
             // Emit a "vote_submitted" event to send the player's vote to the server
@@ -17,7 +21,11 @@
                 <div className="modal-content">
                     <h1>
                         Is the answer: <span className="highlight">{answer}</span>{" "}
+<<<<<<< HEAD
                         by <span className="highlight">{user}</span> acceptable?
+=======
+                        valid?
+>>>>>>> 1c759bed16d03654143d63addefc7a59c3fef30f
                     </h1>
                     <div className="vote-buttons">
                         <button className="yes" onClick={() => handleVote(true)}>

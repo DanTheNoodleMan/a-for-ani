@@ -12,6 +12,7 @@ function AnswerInput({ socket, user, setUserAnswers }) {
         socket.emit("answer_submitted", {answer, user});
         setAnswer("");
 
+<<<<<<< HEAD
         // Update the temporary mapping of users to their submitted answers
         setUserAnswers((prevUserAnswers) => ({
             ...prevUserAnswers,
@@ -19,6 +20,8 @@ function AnswerInput({ socket, user, setUserAnswers }) {
         }));
     };
 
+=======
+>>>>>>> 1c759bed16d03654143d63addefc7a59c3fef30f
     return (
         <div className="answer-input">
             <form className="form" onSubmit={handleSendAnswer}>
