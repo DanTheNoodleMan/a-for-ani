@@ -7,6 +7,7 @@ export function useAppContext() {
 }
 
 export function AppContextProvider({ children }) {
+    
     const [answer, setAnswer] = useState("");
     const [answerUser, setAnswerUser] = useState([]); //array index 0 is the answer, index 1 is the user
     const [user, setUser] = useState("");
@@ -16,6 +17,7 @@ export function AppContextProvider({ children }) {
     const [userCount, setUserCount] = useState(0);
     const [usersReady, setUsersReady] = useState([]);
     const [socketToUser, setSocketToUser] = useState({});
+
 
     const contextValue = {
         answer,

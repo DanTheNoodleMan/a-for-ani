@@ -4,9 +4,11 @@
     align-items: center;
     justify-content: space-between;
     height: 100%;
+    background:var(--bg);
 }
 
 .gameboard{
+    background: url(https://img.freepik.com/premium-photo/light-table-top-view-wood-texture-cream-shades-wooden-background_84485-2542.jpg?w=2000);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -15,8 +17,7 @@
     gap:2em;
     height: 30em;
     width: 80%;
-    margin-top: 5em;
-    padding: 20px;
+    padding: 4em;
     border-radius: 5px;
     border: 2px solid #323232;
     box-shadow: 4px 4px #323232;
@@ -34,6 +35,8 @@
     border: 2px solid #323232;
     box-shadow: 4px 4px #323232;
     padding:1em;
+
+    font-family: 'Londrina Solid', cursive;
 }
 
 .categorycard{
@@ -48,6 +51,14 @@
     background-color: var(--secondary);
 }
 
+.letter{
+    font-size: 5em;
+    font-weight: 600;
+    color: #ffffff;
+    -webkit-text-stroke: #323232 1px;
+    text-shadow: 2px 2px #323232;
+}
+
 .mid{
     grid-column: 2;
 }
@@ -59,6 +70,14 @@
     gap:1em;
     text-align: center;
     height: auto;
+}
+
+.category{
+    font-size: 2em;
+    font-weight: 600;
+    color: #ffffff;
+    -webkit-text-stroke: #323232 1px;
+    text-shadow: 2px 2px #323232;
 }
 
 .category-1{
