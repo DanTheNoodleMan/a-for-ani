@@ -1,17 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Room from "./Room";
 import Navbar from "./Navbar";
 import Tutorial from "./Tutorial";
 import "../styles/register.css";
+import { useAppContext } from "../AppContext"; // Import the context hook
 
 function Register({ socket }) {
-    const [user, setUser] = useState("");
-    const [users, setUsers] = useState([]); //List of users in the room
-    const [room, setRoom] = useState("");
-    const [messages, setMessages] = useState([]);
-    const [userCount, setUserCount] = useState(0); //Number of users in the room
-    const [usersReady, setUsersReady] = useState([]); //List of users that are ready
-    const [socketToUser, setSocketToUser] = useState({}); // Mapping of socket IDs to usernames
+    const {
+        user,
+        setUser,
+        users,
+        setUsers,
+        room,
+        setRoom,
+        messages,
+        setMessages,
+        userCount,
+        setUserCount,
+        usersReady,
+        setUsersReady,
+        socketToUser,
+        setSocketToUser,
+    } = useAppContext(); // Use the context hook to access shared data
 
     useEffect(() => {
         const handleUserJoined = (userId) => {
@@ -56,7 +66,7 @@ function Register({ socket }) {
         return () => {
             socket.off("user_joined", handleUserJoined);
         };
-    }, [messages, socket, userCount]);
+    }, [messages, socket, userCount, setMessages, setUsers, setUserCount, setSocketToUser, setUsersReady]);
 
     const handleJoinRoom = () => {
         socket.emit("join_room", room, user);
@@ -104,7 +114,11 @@ function Register({ socket }) {
                     }}
                 />
 
-                <button type="button" className="access" onClick={handleJoinRoom}>
+                <button
+                    type="button"
+                    className="access"
+                    onClick={handleJoinRoom}
+                >
                     Access
                 </button>
             </div>

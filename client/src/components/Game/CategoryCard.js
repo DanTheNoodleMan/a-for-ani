@@ -18,6 +18,11 @@ function CategoryCard({ socket }) {
         // Emit the 'generate_letters' event to request a new letter for this card
         socket.emit("generate_category");
     };
+
+    useEffect(() => {
+        handleRandomCategory();
+    }, []);
+
     return (
         <div className="categorycard">
             <button onClick={handleRandomCategory}>
@@ -25,7 +30,11 @@ function CategoryCard({ socket }) {
             </button>
             <div className="category-container">
                 {category.map((cat, index) => (
-                    <div key={index} className={`category category-${index + 1}`}>{cat}
+                    <div
+                        key={index}
+                        className={`category category-${index + 1}`}
+                    >
+                        {cat}
                     </div>
                 ))}
             </div>
