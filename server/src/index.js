@@ -307,17 +307,13 @@ io.on("connection", (socket) => {
         console.log("BACKEND Answer submitted: " + answer + " by " + user);
 
         //send the answer to all clients
-        io.emit("start_vote", answers, user);
+        io.emit("start_vote", answers);
     });
 
-    socket.on("vote_submitted", ({ vote, answer, users }) => {
-<<<<<<< HEAD
+    socket.on("vote_submitted", (vote, answer, users) => {
         console.log(
             "vote: " + vote + " answer: " + answer + " users: " + users
         );
-=======
-        console.log("vote: " + vote + " answer: " + answer + " users: " + users)
->>>>>>> 1c759bed16d03654143d63addefc7a59c3fef30f
         // Record the player's vote for the given answer
         votes[answer] = votes[answer] || { true: 0, false: 0 };
         votes[answer][vote]++;
@@ -325,7 +321,6 @@ io.on("connection", (socket) => {
         // Add the player to the set of players who have voted
         playersVoted.add(socket.id);
 
-<<<<<<< HEAD
         if (playersVoted.size === users.length) {
             const voteResults = calculateVoteResults(votes, answer);
 
@@ -339,19 +334,6 @@ io.on("connection", (socket) => {
             resetVotesAndPlayersVoted();
         }
     });
-=======
-        if(playersVoted.size === users.length){
-            const voteResults = calculateVoteResults(votes, answer);
-
-            console.log(voteResults)
-            io.emit("vote_outcome", voteResults);
-
-            // Reset the votes and playersVoted for the next round
-            resetVotesAndPlayersVoted();
-        }
-    });
-
->>>>>>> 1c759bed16d03654143d63addefc7a59c3fef30f
 });
 
 httpServer.listen(3001, () => {
