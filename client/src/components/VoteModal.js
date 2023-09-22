@@ -3,22 +3,22 @@
     import { FaThumbsUp } from "react-icons/fa";
     import { FaThumbsDown } from "react-icons/fa";
 
-    function VoteModal({ socket, answer, users, answerUser }) {
+    function VoteModal({ socket, answerRef, users, answerUserRef }) {
 
         const handleVote = (vote) => {
             // Emit a "vote_submitted" event to send the player's vote to the server
             console.log("Vote: " + vote)
             console.log("Users voting: " + users)
-            console.log("answerUser: " + answerUser)
-            socket.emit("vote_submitted", vote, answer, users);
+            console.log("answerUser: " + answerUserRef.current)
+            socket.emit("vote_submitted", vote, answerRef.current, users);
         };
 
         return (
             <div className="vote-modal">
                 <div className="modal-content">
                     <h1>
-                        Is the answer: <span className="highlight">{answer}</span>{" "}
-                        by <span className="highlight">{answerUser}</span> acceptable?
+                        Is the answer: <span className="highlight">{answerRef.current}</span>{" "}
+                        by <span className="highlight">{answerUserRef.current}</span> acceptable?
                     </h1>
                     <div className="vote-buttons">
                         <button className="yes" onClick={() => handleVote(true)}>

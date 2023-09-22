@@ -304,7 +304,7 @@ io.on("connection", (socket) => {
     socket.on("answer_submitted", (answer, user) => {
         answers.push([answer, user]);
         console.log("BAKCEND answers " + answers);
-        console.log("BACKEND Answer submitted: " + answer + " by " + user);
+        console.log("BACKEND Answer submitted: " + answers[0][0] + " by " + answers[0][1]);
 
         //send the answer to all clients
         io.emit("start_vote", answers);
