@@ -26,6 +26,7 @@ const letterCards = {}; // Object to store the letter card value for each room
 const answers = []; // Array to store objects of the answers submitted by each player
 const votes = {}; // Object to store the votes for each answer
 const playersVoted = new Set(); // Set to keep track of players who have voted
+let restartVotes = {}; // Object to store the votes to restart the game
 
 // Array of letters for random letter choosing for the client LetterCard component
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""); // Array of letters for random letter choosing
@@ -72,6 +73,19 @@ const resetVotesAndPlayersVoted = () => {
 
     // Clear the set of players who have voted
     playersVoted.clear();
+};
+
+const disconnectUsersAndDestroyRoom = (io, roomId) => {
+    // Get all connected sockets in the room
+    const roomSockets = io.sockets.adapter.rooms[roomId]?.sockets || {};
+
+    // Disconnect all users in the room
+    for (const socketId in roomSockets) {
+        io.sockets.sockets[socketId].leave(roomId); // Make the users leave the room
+    }
+
+    // Delete the room
+    delete io.sockets.adapter.rooms[roomId];
 };
 
 // Array of all categories for the client CategoryCard component
@@ -304,7 +318,12 @@ io.on("connection", (socket) => {
     socket.on("answer_submitted", (answer, user) => {
         answers.push([answer, user]);
         console.log("BAKCEND answers " + answers);
-        console.log("BACKEND Answer submitted: " + answers[0][0] + " by " + answers[0][1]);
+        console.log(
+            "BACKEND Answer submitted: " +
+                answers[0][0] +
+                " by " +
+                answers[0][1]
+        );
 
         //send the answer to all clients
         io.emit("start_vote", answers);
@@ -331,6 +350,34 @@ io.on("connection", (socket) => {
             io.emit("vote_outcome", voteResults);
 
             // Reset the votes and playersVoted for the next round
+            resetVotesAndPlayersVoted();
+        }
+    });
+
+    socket.on("vote_restart_game", (vote, users, room) => {
+        console.log("RESTART -> vote: " + vote + " users: " + users);
+        // Record the player's vote for the given answer
+        // Record the player's vote for restarting the game
+        restartVotes[socket.id] = vote;
+
+        // Add the player to the set of players who have voted
+        playersVoted.add(socket.id);
+
+        if (playersVoted.size === users.length) {
+            // Check if all users voted to restart
+            const unanimousRestart = Object.values(restartVotes).every((v) => v);
+            
+            console.log("Unanimous restart: ", unanimousRestart);
+            if (unanimousRestart) {
+                // If all users voted to restart, emit an event to the Game component
+                io.emit("restart_game");
+            } else {
+                // If the vote isn't unanimous, disconnect users and destroy the room
+                disconnectUsersAndDestroyRoom(io, room);
+            }
+
+            // Reset the votes and playersVoted for the next vote
+            restartVotes = {};
             resetVotesAndPlayersVoted();
         }
     });

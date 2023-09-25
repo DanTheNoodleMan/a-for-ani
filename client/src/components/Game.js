@@ -5,12 +5,13 @@ import Timer from "./Game/Timer";
 import "../styles/game.css";
 import VoteModal from "./VoteModal";
 import Navbar from "./Navbar";
+import RestartModal from "./RestartModal";
 import { useAppContext } from "../AppContext"; // Import the context hook
 
 function Game({ socket }) {
     const [showVoteModal, setShowVoteModal] = useState(false);
+    const [showRestartModal, setShowRestartModal] = useState(false); // Whether to show the restart modal
     const [winner, setWinner] = useState(""); // The winner of the game
-    const [scores, setScores] = useState({}); // The scores of all players
 
     const {
         answer,
@@ -35,6 +36,8 @@ function Game({ socket }) {
 
     const answerRef = useRef(""); // Use a ref to store answer
     const answerUserRef = useRef(""); // Use a ref to store answerUser
+    const scoresRef = useRef({}); // Use a ref to store scores
+    const gameOverRef = useRef(false); // Use a ref to store gameOver
 
     const handleRandomLetter = (cardId) => {
         socket.emit("generate_letter", cardId);
@@ -48,6 +51,13 @@ function Game({ socket }) {
         handleRandomLetter(2);
         handleRandomLetter(3);
         handleRandomCategory();
+    };
+
+    const handleRestart = () => {
+        setWinner("");
+        scoresRef.current = {}; // Reset the scoresRef to an empty object
+        gameOverRef.current = false;
+        setShowRestartModal(false);
     };
 
     useEffect(() => {
@@ -79,28 +89,49 @@ function Game({ socket }) {
                 console.log("Winner: " + winningUser);
 
                 // Update the scores object to increment the winning player's score
-                setScores((prevScores) => ({
-                    ...prevScores,
-                    [winningUser]: (prevScores[winningUser] || 0) + 1,
-                }));
+                const newScores = {
+                    ...scoresRef.current, // Get the current scores from the ref
+                    [winningUser]: (scoresRef.current[winningUser] || 0) + 1,
+                };
+
+                scoresRef.current = newScores; // Update the scores in the ref
 
                 setShowVoteModal(false); // Close the modal
 
+                console.log(
+                    "Scores winningUser: ",
+                    scoresRef.current[winningUser]
+                );
+                // Check if the winner has reached 9 points
+                if (scoresRef.current[winningUser] >= 3) {
+                    gameOverRef.current = true;
+                }
+
                 handleRefreshValues(); // Call the refresh function
 
-                // Trigger a notification or animation
-                // You can set a timer to hide the notification after some time
-                setTimeout(() => {
-                    setWinner(""); // Reset winner
-                }, 2000); // Hide after 2 seconds
+                console.log("Game over: ", gameOverRef.current);
+
+                if (gameOverRef.current) {
+                    setShowRestartModal(true);
+                } else {
+                    // Display the restart modal if the game is over
+                    setTimeout(() => {
+                        setWinner(""); // Reset the winner after 2 seconds (pop up displaying winner disappears after 2 secs)
+                    }, 2000);
+                }
             } else {
                 setShowVoteModal(false);
             }
         });
 
+        socket.on("restart_game", () => {
+            handleRestart();
+        });
+
         return () => {
             socket.off("start_vote");
             socket.off("vote_outcome");
+            socket.off("restart_game");
         };
     }, [socket]);
 
@@ -108,7 +139,7 @@ function Game({ socket }) {
     const renderScores = () => {
         return (
             <div className="scores">
-                {Object.entries(scores).map(([user, score]) => (
+                {Object.entries(scoresRef.current).map(([user, score]) => (
                     <div key={user} className="score">
                         <span className="username">{user}:</span>{" "}
                         <span className="points-won">{score}</span> points
@@ -128,12 +159,25 @@ function Game({ socket }) {
                     answerUserRef={answerUserRef}
                 />
             ) : null}
+
+            {showRestartModal ? (
+                <RestartModal
+                    socket={socket}
+                    winner={winner}
+                    users={users}
+                    room={room}
+                    handleRestart={handleRestart}
+                />
+            ) : null}
+
             {winner && (
                 <div className="popup-notification">
                     <div className="progress-bar">
                         <div className="progress"></div>
                     </div>
-                    <div className="winner-text"><span className="username">{winner}</span> wins a point!</div>
+                    <div className="winner-text">
+                        <span className="username">{winner}</span> wins a point!
+                    </div>
                 </div>
             )}
             <Navbar user={user} />
