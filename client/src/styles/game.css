@@ -1,101 +1,158 @@
-.game{
+.game {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     height: 100%;
-    background:var(--bg);
+    background: var(--bg);
 }
 
-.gameboard{
+.gameboard {
+    position: relative;
     background: url(https://img.freepik.com/premium-photo/light-table-top-view-wood-texture-cream-shades-wooden-background_84485-2542.jpg?w=2000);
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 30% 40% 30%;
     grid-template-rows: repeat(2, 1fr);
     align-items: center;
     justify-content: center;
-    gap:2em;
+    gap: 2em;
     height: 30em;
     width: 80%;
-    padding: 4em;
+    padding: 2em;
     border-radius: 5px;
     border: 2px solid #323232;
     box-shadow: 4px 4px #323232;
     box-sizing: content-box;
 }
 
-.lettercard, .categorycard{
+.reset-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1em;
+    border-radius: 5px;
+    border: 2px solid #323232;
+    box-shadow: 4px 4px #323232;
+    cursor: pointer;
+}
+
+.reset-button svg {
+    stroke: #323232;
+    stroke-width: 0.6px;
+    stroke-linejoin: round;
+    font-size: 3em;
+    transition: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.reset-button svg:hover {
+    rotate: -90deg;
+}
+
+.categorycard {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
+    width: 100%;
     box-sizing: border-box;
     border-radius: 5px;
     border: 2px solid #323232;
     box-shadow: 4px 4px #323232;
-    padding:1em;
 
-    font-family: 'Londrina Solid', cursive;
+    font-family: "Londrina Solid", cursive;
 }
 
-.categorycard{
+.lettercard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-family: "Londrina Solid", cursive;
+}
+
+.categorycard {
     background-color: var(--primary);
+    flex: 1 1 0;
+    height: 100%;
 }
 
 .categorycard button {
     z-index: 1;
 }
 
-.lettercard{
-    background-color: var(--secondary);
+.lettercard img {
+    position: absolute;
+    top: -15%;
+    z-index: 0;
+    height: 100%;
+    width: 14em;
+    filter: drop-shadow(4px 4px #323232);
 }
 
-.letter{
+.letter {
     font-size: 5em;
     font-weight: 600;
     color: #ffffff;
     -webkit-text-stroke: #323232 1px;
     text-shadow: 2px 2px #323232;
+    z-index: 2;
 }
 
-.mid{
+.lettercard-1 {
+    transform: rotate(-90deg) translate(0, 50%);
+}
+
+.lettercard-2 {
+    transform: rotate(90deg) translate(0, 50%);
+}
+
+.mid {
     grid-column: 2;
+    transform: rotate(180deg) translate(0, 10%);
 }
 
-.category-container{
+.category-container {
     z-index: 0;
     display: flex;
+    flex: 1 1 0;
     justify-content: center;
-    gap:1em;
+    align-items: center;
+    gap: 1em;
     text-align: center;
     height: auto;
+    width: 100%;
 }
 
-.category{
-    font-size: 2em;
+.category {
+    font-size: 2.25em;
     font-weight: 600;
     color: #ffffff;
     -webkit-text-stroke: #323232 1px;
     text-shadow: 2px 2px #323232;
 }
 
-.category-1{
-    flex:1;
+.category-1 {
+    rotate: 90deg;
+    height: 50%;
+    width: 50%;
 }
 
-.category-2{
-    flex:1;
+.category-2 {
+    height: max-content;
+    width: max-content;
 }
 
-.category-3{
-    flex:1;
+.category-3 {
+    rotate: -90deg;
+    height: 50%;
+    width: 50%;
 }
-
 
 /*/Chat Input/*/
-.answer-input{
-    margin:2em;
+.answer-input {
+    margin: 2em;
 }
 .answer {
     box-sizing: border-box;
@@ -105,7 +162,7 @@
     border: 2px solid #323232;
     background-color: #fff;
     box-shadow: 4px 4px #323232;
-    font-size: 1em;
+    font-size: 1.2em;
     font-weight: 600;
     color: #323232;
     padding: 5px 10px;
@@ -118,12 +175,11 @@
     opacity: 0.8;
 }
 
-
 .answer:focus {
     border: 2px solid var(--accent);
 }
 
-.form{
+.form {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -131,25 +187,107 @@
     height: 100%;
 }
 
-.sendBtn{
-    height:100%;
+.sendBtn {
+    height: 100%;
     box-sizing: border-box;
     width: 6em;
     height: 2.5em;
+    background-color: greenyellow;
     border-radius: 0 5px 5px 0;
     border: 2px solid #323232;
-    background-color: greenyellow;
     box-shadow: 4px 4px #323232;
-    font-size: 1em;
+    font-size: 1.2em;
     font-weight: 600;
     color: #323232;
     padding: 5px 10px;
     outline: none;
     transition: 0.1s linear;
+    cursor: pointer;
 }
 
 .sendBtn:hover {
     border: 2px solid var(--accent);
     transform: translate(-2px, -2px);
     box-shadow: 8px 8px #323232;
+}
+
+/*/Score Board/*/
+
+.scores {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 1em;
+    width: 100%;
+    font-family: "Londrina Solid", cursive;
+    font-size: 2em;
+    font-weight: 600;
+    color: #ffffff;
+    -webkit-text-stroke: #323232 1px;
+    text-shadow: 2px 2px #323232;
+    z-index: 2;
+}
+
+.points-won {
+    color: var(--secondary);
+}
+
+/*/Winner popup/*/
+.popup-notification {
+    width: 10em;
+    height: auto;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 0 5px 5px 0;
+    border: 2px solid #323232;
+    box-shadow: 4px 4px #323232;
+    background-color: #ffffff;
+    text-align: center;
+    z-index: 1000;
+    animation: popup 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1;
+}
+
+.winner-text {
+    font-size: 18px;
+    margin:20px;
+    font-size: 1.5em;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #f0f0f0;
+}
+
+.progress {
+    height: 100%;
+    width: 100%;
+    background-color: greenyellow; /* Green color */
+    animation: load 2s linear 1;
+}
+
+@keyframes load {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0%;
+    }
+}
+
+@keyframes popup {
+    0% {
+        transform: scale(0.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.username{
+    font-family: "Londrina Solid", cursive;
 }

@@ -16,7 +16,7 @@ function AnswerInput({ socket, user, users, answer, setAnswer }) {
             <form className="form" onSubmit={handleSendAnswer}>
                 <input
                     type="text"
-                    placeholder="Write message"
+                    placeholder="Send your answer"
                     className="answer"
                     onChange={(e) => setAnswer(e.target.value)}
                 />

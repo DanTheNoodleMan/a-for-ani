@@ -20,9 +20,6 @@ function CategoryCard({ socket, handleRandomCategory }) {
 
     return (
         <div className="categorycard">
-            <button onClick={handleRandomCategory}>
-                Press me for a Category
-            </button>
             <div className="category-container">
                 {category.map((cat, index) => (
                     <div

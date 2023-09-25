@@ -4,14 +4,24 @@ import CategoryCard from "./CategoryCard";
 import AnswerInput from "./AnswerInput";
 import Timer from "./Timer";
 import "../../styles/game.css";
+import { VscDebugRestart } from "react-icons/vsc";
 
-function GameBoard({ socket, handleRefreshValues, handleRandomCategory, handleRandomLetter }) {
-
-
+function GameBoard({
+    socket,
+    handleRefreshValues,
+    handleRandomCategory,
+    handleRandomLetter,
+    renderScores,
+}) {
     return (
         <>
-            <button onClick={() => handleRefreshValues()}>Refresh all values</button>
             <div className="gameboard">
+                <button
+                    className="reset-button"
+                    onClick={() => handleRefreshValues()}
+                >
+                    <VscDebugRestart />
+                </button>
                 <LetterCard
                     socket={socket}
                     cardId={1}
@@ -32,6 +42,7 @@ function GameBoard({ socket, handleRefreshValues, handleRandomCategory, handleRa
                     className="mid"
                     handleRandomLetter={handleRandomLetter}
                 />
+                {renderScores()} {/* Display Scores */}
             </div>
         </>
     );

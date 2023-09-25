@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/game.css";
+import cardImg from "../../assets/card.png";
 
 function LetterCard({ socket, cardId, handleRandomLetter}) {
     const [letter, setLetter] = useState(""); //The letter for this card
@@ -24,12 +25,12 @@ function LetterCard({ socket, cardId, handleRandomLetter}) {
 
     return cardId === 3 ? (
         <div className="lettercard mid">
-            <button onClick={() => handleRandomLetter(cardId)}>Press me for a letter</button>
+            <img src={cardImg} alt="Card Design" />
             <div className="letter">{letter}</div>
         </div>
     ) : (
-        <div className="lettercard">
-            <button onClick={() => handleRandomLetter(cardId)}>Press me for a letter</button>
+        <div className={`lettercard lettercard-${cardId}`}>
+            <img src={cardImg} alt="Card Design" />
             <div className="letter">{letter}</div>
         </div>
     );

@@ -1,15 +1,17 @@
 import React from "react";
 import "../styles/navbar.css";
-import logo from "../assets/logo.png";
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
     return (
         <div className="navbar">
             <div className="navbar-logo">
-                <img src={logo} alt="Logo" />
+                <a className="logo" href="/">
+                    A for Ani
+                </a>
             </div>
             <div className="navbar-links">
                 <ul>
+                    <li className="user">{user}</li>
                     <li>
                         <a href="/">Home</a>
                     </li>

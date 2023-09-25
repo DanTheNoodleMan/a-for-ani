@@ -5,6 +5,7 @@ import bagel from "../assets/bagel.png";
 import cinnamon from "../assets/cinnamon.png";
 import pizza from "../assets/pizza.png";
 import burger from "../assets/burger.png";
+import { MdExitToApp } from "react-icons/md";
 
 const userIcons = [bagel, cinnamon, pizza, burger];
 const badgeColors = ["#fee440", "#00bbf9", "#00f5d4", "#f15bb5"];
@@ -57,7 +58,7 @@ function Room({ socket, userArray, room, count, ready, socketToUser }) {
     return (
         <div className="content">
             <button className="leave" onClick={handleLeave}>
-                Leave
+                <MdExitToApp/>
             </button>
             <h1>
                 Room:{" "}

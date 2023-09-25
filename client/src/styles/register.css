@@ -16,6 +16,7 @@
 }
 
 .register {
+    width: 30%;
     box-sizing: border-box;
     position: relative;
     padding: 20px;
@@ -28,17 +29,18 @@
     border-radius: 5px;
     border: 2px solid #323232;
     box-shadow: 4px 4px #323232;
-    margin: 15em auto 11.5em auto;
+    margin: 13em auto 14.5em auto;
 }
 
 .register h1 {
     margin: 0;
+    font-size: 2rem;
 }
 
 .register span {
     color: #3c3c3c;
     font-weight: 600;
-    font-size: 17px;
+    font-size: 1.5rem;
 }
 
 .register input {
@@ -49,7 +51,7 @@
     border: 2px solid #323232;
     background-color: #fff;
     box-shadow: 4px 4px #323232;
-    font-size: 1em;
+    font-size: 1.1em;
     font-weight: 600;
     color: #323232;
     padding: 5px 10px;

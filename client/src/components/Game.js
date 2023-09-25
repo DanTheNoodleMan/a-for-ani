@@ -4,6 +4,7 @@ import AnswerInput from "./Game/AnswerInput";
 import Timer from "./Game/Timer";
 import "../styles/game.css";
 import VoteModal from "./VoteModal";
+import Navbar from "./Navbar";
 import { useAppContext } from "../AppContext"; // Import the context hook
 
 function Game({ socket }) {
@@ -85,14 +86,13 @@ function Game({ socket }) {
 
                 setShowVoteModal(false); // Close the modal
 
-
                 handleRefreshValues(); // Call the refresh function
 
                 // Trigger a notification or animation
                 // You can set a timer to hide the notification after some time
                 setTimeout(() => {
                     setWinner(""); // Reset winner
-                }, 3000); // Hide after 1 second
+                }, 2000); // Hide after 2 seconds
             } else {
                 setShowVoteModal(false);
             }
@@ -110,7 +110,8 @@ function Game({ socket }) {
             <div className="scores">
                 {Object.entries(scores).map(([user, score]) => (
                     <div key={user} className="score">
-                        <span className="username">{user}:</span> {score} points
+                        <span className="username">{user}:</span>{" "}
+                        <span className="points-won">{score}</span> points
                     </div>
                 ))}
             </div>
@@ -128,15 +129,21 @@ function Game({ socket }) {
                 />
             ) : null}
             {winner && (
-                <div className="winner-notification">
-                    Player {winner} wins a point!
+                <div className="popup-notification">
+                    <div className="progress-bar">
+                        <div className="progress"></div>
+                    </div>
+                    <div className="winner-text"><span className="username">{winner}</span> wins a point!</div>
                 </div>
             )}
-            {renderScores()} {/* Display Scores */}
-            <h1>Game</h1>
-            <h2>{user}</h2>
-            <Timer />
-            <GameBoard socket={socket} handleRefreshValues={handleRefreshValues} handleRandomCategory={handleRandomCategory} handleRandomLetter={handleRandomLetter} />
+            <Navbar user={user} />
+            <GameBoard
+                socket={socket}
+                handleRefreshValues={handleRefreshValues}
+                handleRandomCategory={handleRandomCategory}
+                handleRandomLetter={handleRandomLetter}
+                renderScores={renderScores}
+            />
             <AnswerInput
                 socket={socket}
                 user={user}
