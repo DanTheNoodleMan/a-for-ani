@@ -9,7 +9,6 @@ function AnswerInput({ socket, user, users, answer, setAnswer }) {
             "ANSWER_INPUT: Answer submitted: " + answer + " by " + user
         );
         socket.emit("answer_submitted", answer, user);
-        setAnswer("");
     };
 
     return (

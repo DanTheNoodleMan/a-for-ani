@@ -35,16 +35,34 @@ function Game({ socket }) {
     const answerRef = useRef(""); // Use a ref to store answer
     const answerUserRef = useRef(""); // Use a ref to store answerUser
 
+    const handleRandomLetter = (cardId) => {
+        socket.emit("generate_letter", cardId);
+    };
+    const handleRandomCategory = () => {
+        socket.emit("generate_category");
+    };
+
+    const handleRefreshValues = () => {
+        handleRandomLetter(1);
+        handleRandomLetter(2);
+        handleRandomLetter(3);
+        handleRandomCategory();
+    };
+
     useEffect(() => {
         socket.on("start_vote", (answers) => {
             // Display the vote modal when a "start_vote" event is received
             setShowVoteModal(true);
-            
+
             // Update the refs with the current values
             answerRef.current = answers[0][0];
             answerUserRef.current = answers[0][1];
 
-            console.log("Updated answer and answerUser: ", answerRef.current, answerUserRef.current);
+            console.log(
+                "Updated answer and answerUser: ",
+                answerRef.current,
+                answerUserRef.current
+            );
             console.log("FRONTEND: " + answers[0][0] + " by " + answers[0][1]);
         });
 
@@ -66,6 +84,9 @@ function Game({ socket }) {
                 }));
 
                 setShowVoteModal(false); // Close the modal
+
+
+                handleRefreshValues(); // Call the refresh function
 
                 // Trigger a notification or animation
                 // You can set a timer to hide the notification after some time
@@ -106,11 +127,16 @@ function Game({ socket }) {
                     answerUserRef={answerUserRef}
                 />
             ) : null}
-            {winner && <div className="winner-notification">Player {winner} wins a point!</div>}
+            {winner && (
+                <div className="winner-notification">
+                    Player {winner} wins a point!
+                </div>
+            )}
             {renderScores()} {/* Display Scores */}
             <h1>Game</h1>
+            <h2>{user}</h2>
             <Timer />
-            <GameBoard socket={socket} />
+            <GameBoard socket={socket} handleRefreshValues={handleRefreshValues} handleRandomCategory={handleRandomCategory} handleRandomLetter={handleRandomLetter} />
             <AnswerInput
                 socket={socket}
                 user={user}

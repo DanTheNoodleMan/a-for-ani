@@ -5,24 +5,12 @@ import AnswerInput from "./AnswerInput";
 import Timer from "./Timer";
 import "../../styles/game.css";
 
-function GameBoard({ socket }) {
-    const handleRandomLetter = (cardId) => {
-        socket.emit("generate_letter", cardId);
-    };
-    const handleRandomCategory = () => {
-        socket.emit("generate_category");
-    };
+function GameBoard({ socket, handleRefreshValues, handleRandomCategory, handleRandomLetter }) {
 
-    const refreshValues = () => {
-        handleRandomLetter(1);
-        handleRandomLetter(2);
-        handleRandomLetter(3);
-        handleRandomCategory();
-    };
 
     return (
         <>
-            <button onClick={() => refreshValues()}>Refresh all values</button>
+            <button onClick={() => handleRefreshValues()}>Refresh all values</button>
             <div className="gameboard">
                 <LetterCard
                     socket={socket}
