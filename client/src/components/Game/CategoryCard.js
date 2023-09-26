@@ -12,7 +12,7 @@ function CategoryCard({ socket, handleRandomCategory }) {
         return () => {
             socket.off("category_generated");
         };
-    }, [socket]); // Removed 'letter' from the dependency array
+    }, [socket, handleRandomCategory]); // Removed 'letter' from the dependency array
 
     useEffect(() => {
         handleRandomCategory();

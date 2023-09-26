@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import http from "http";
+import path from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import { Server } from "socket.io";
 
 // Use port number from the PORT environment variable or 3000 if not specified
@@ -12,6 +15,14 @@ const httpServer = http.createServer(app); // Assign the HTTP server to a variab
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the 'build' directory
+app.use(express.static(path.join(__dirname, "client/build")));
+
+// Handle any other routes and serve the React app
+app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client/build/index.html"));
+});
 
 // Create a socket.io server and attach it to the HTTP server
 const io = new Server(httpServer, {
@@ -368,8 +379,10 @@ io.on("connection", (socket) => {
 
         if (playersVoted.size === users.length) {
             // Check if all users voted to restart
-            const unanimousRestart = Object.values(restartVotes).every((v) => v);
-            
+            const unanimousRestart = Object.values(restartVotes).every(
+                (v) => v
+            );
+
             console.log("Unanimous restart: ", unanimousRestart);
             if (unanimousRestart) {
                 // If all users voted to restart, emit an event to the Game component

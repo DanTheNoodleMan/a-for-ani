@@ -1,8 +1,6 @@
 import React from "react";
 import LetterCard from "./LetterCard";
 import CategoryCard from "./CategoryCard";
-import AnswerInput from "./AnswerInput";
-import Timer from "./Timer";
 import "../../styles/game.css";
 import { VscDebugRestart } from "react-icons/vsc";
 
