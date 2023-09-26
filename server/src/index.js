@@ -3,6 +3,9 @@ import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
 
+// Use port number from the PORT environment variable or 3000 if not specified
+const port = process.env.PORT || 3000;
+
 const app = express();
 
 const httpServer = http.createServer(app); // Assign the HTTP server to a variable
@@ -383,6 +386,6 @@ io.on("connection", (socket) => {
     });
 });
 
-httpServer.listen(3001, () => {
-    console.log("Server running on port 3001");
+httpServer.listen(port, () => {
+    console.log(`App listening at http://localhost:${port}`);
 });
