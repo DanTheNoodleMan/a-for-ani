@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import io from "socket.io-client";
 import { AppContextProvider } from './AppContext'; // Import the context provider
 
-const socket = io.connect("http://localhost:3001"); //connect to my server address
+const socket = io.connect("https://a-for-ani.adaptable.app/"); //connect to my server address
 
 function App() {
     return (

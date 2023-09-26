@@ -16,7 +16,7 @@ app.use(express.json());
 // Create a socket.io server and attach it to the HTTP server
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "https://a-for-ani.adaptable.app/",
     },
 });
 
