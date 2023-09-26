@@ -1,10 +1,13 @@
 import express from "express";
 import cors from "cors";
 import http from "http";
-import path from "path";
+import { Server } from "socket.io";
+
+import { fileURLToPath } from 'url';
+import path from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-import { Server } from "socket.io";
+
 
 // Use port number from the PORT environment variable or 3000 if not specified
 const port = process.env.PORT || 3000;
