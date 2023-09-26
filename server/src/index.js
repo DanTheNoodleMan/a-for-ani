@@ -20,11 +20,11 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the 'build' directory
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 // Handle any other routes and serve the React app
-app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client/build/index.html"));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 // Create a socket.io server and attach it to the HTTP server
