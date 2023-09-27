@@ -3,15 +3,6 @@ import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
 
-import { fileURLToPath } from 'url';
-import path from 'path';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-
-// Use port number from the PORT environment variable or 3000 if not specified
-const port = process.env.PORT || 3000;
-
 const app = express();
 
 const httpServer = http.createServer(app); // Assign the HTTP server to a variable
@@ -19,19 +10,14 @@ const httpServer = http.createServer(app); // Assign the HTTP server to a variab
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the 'build' directory
-app.use(express.static(path.join(__dirname, 'client', 'build')));
-
-// Handle any other routes and serve the React app
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
-
 // Create a socket.io server and attach it to the HTTP server
 const io = new Server(httpServer, {
     cors: {
-        origin: "https://a-for-ani.adaptable.app/",
+        origin: "*",
+        methods: ["GET", "POST"],
+        allowedHeaders: ["Access-Control-Allow-Origin"],
     },
+    maxHttpBufferSize: 1e8,
 });
 
 // Variables to store data on the server
@@ -402,6 +388,8 @@ io.on("connection", (socket) => {
     });
 });
 
+// Use port number from the PORT environment variable or 3000 if not specified
+const port = process.env.PORT || 3001;
 httpServer.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`);
 });
