@@ -1,11 +1,11 @@
 .vote-modal {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     position: fixed;
     z-index: 1000;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -15,17 +15,35 @@
 
 .modal-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 5em;
+    margin-bottom: 2em;
     justify-content: center;
     align-items: center;
     background-color: var(--primary);
-    width: 60%;
-    height: 60%;
+    width: 70%;
+    height: 20%;
     border-radius: 5px;
     border: 2px solid #323232;
     box-shadow: 4px 4px #323232;
     padding: 1em;
     animation: popup 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1;
+}
+
+.restart-modal{
+    justify-content: center;
+}
+
+.modal-restart{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2em;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--primary);
+    width: 60%;
+    height: 60%;
 }
 
 @keyframes popup {

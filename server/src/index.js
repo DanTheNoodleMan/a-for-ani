@@ -20,6 +20,13 @@ const io = new Server(httpServer, {
     maxHttpBufferSize: 1e8,
 });
 
+// //Local testing and updating
+// const io = new Server(httpServer, {
+//     cors: {
+//         origin: "http://localhost:3000",
+//     },
+// });
+
 // Variables to store data on the server
 const rooms = {}; // Object to store users in each room
 const ready = {}; // Object to store users' ready status
@@ -34,62 +41,6 @@ let restartVotes = {}; // Object to store the votes to restart the game
 // Array of letters for random letter choosing for the client LetterCard component
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""); // Array of letters for random letter choosing
 // Aux function to generate a random index
-const randomIndex = (array) => {
-    return Math.floor(Math.random() * array.length);
-};
-
-// Calculate the vote results and determine the outcome
-const calculateVoteResults = (votes, answer) => {
-    const voteData = votes[answer];
-    if (!voteData) {
-        // Handle the case where there are no votes for this answer
-        return {
-            answer,
-            accepted: false, // Reject the answer since there are no votes
-        };
-    }
-
-    const totalVotes = voteData.true + voteData.false;
-    const yesPercentage = (voteData.true / totalVotes) * 100;
-
-    if (yesPercentage > 51) {
-        // Accept the answer if more than 51% voted "Yes"
-        return {
-            answer,
-            accepted: true,
-        };
-    } else {
-        // Reject the answer if 51% or fewer voted "Yes"
-        return {
-            answer,
-            accepted: false,
-        };
-    }
-};
-
-// Reset the votes and playersVoted for the next round
-const resetVotesAndPlayersVoted = () => {
-    Object.keys(votes).forEach((answer) => {
-        // Clear the votes for each answer
-        votes[answer] = { true: 0, false: 0 };
-    });
-
-    // Clear the set of players who have voted
-    playersVoted.clear();
-};
-
-const disconnectUsersAndDestroyRoom = (io, roomId) => {
-    // Get all connected sockets in the room
-    const roomSockets = io.sockets.adapter.rooms[roomId]?.sockets || {};
-
-    // Disconnect all users in the room
-    for (const socketId in roomSockets) {
-        io.sockets.sockets[socketId].leave(roomId); // Make the users leave the room
-    }
-
-    // Delete the room
-    delete io.sockets.adapter.rooms[roomId];
-};
 
 // Array of all categories for the client CategoryCard component
 const allCategories = [
@@ -211,6 +162,65 @@ const allCategories = [
     "Holiday Activities",
     "European Capitals",
 ];
+
+const randomIndex = (array) => {
+    return Math.floor(Math.random() * array.length);
+};
+
+// Calculate the vote results and determine the outcome
+const calculateVoteResults = (votes, answer) => {
+    const voteData = votes[answer];
+    if (!voteData) {
+        // Handle the case where there are no votes for this answer
+        return {
+            answer,
+            accepted: false, // Reject the answer since there are no votes
+        };
+    }
+
+    const totalVotes = voteData.true + voteData.false;
+    const yesPercentage = (voteData.true / totalVotes) * 100;
+
+    if (yesPercentage > 51) {
+        // Accept the answer if more than 51% voted "Yes"
+        return {
+            answer,
+            accepted: true,
+        };
+    } else {
+        // Reject the answer if 51% or fewer voted "Yes"
+        return {
+            answer,
+            accepted: false,
+        };
+    }
+};
+
+// Reset the votes and playersVoted for the next round
+const resetVotesAndPlayersVoted = () => {
+    Object.keys(votes).forEach((answer) => {
+        // Clear the votes for each answer
+        votes[answer] = { true: 0, false: 0 };
+    });
+
+    // Clear the set of players who have voted
+    playersVoted.clear();
+};
+
+const disconnectUsersAndDestroyRoom = (io, roomId) => {
+    // Get all connected sockets in the room
+    const roomSockets = io.sockets.adapter.rooms[roomId]?.sockets || {};
+
+    // Disconnect all users in the room
+    for (const socketId in roomSockets) {
+        io.sockets.sockets[socketId].leave(roomId); // Make the users leave the room
+    }
+
+    // Delete the room
+    delete io.sockets.adapter.rooms[roomId];
+};
+
+
 
 io.on("connection", (socket) => {
     console.log("User connected: ", socket.id);

@@ -1,14 +1,14 @@
 import React from "react";
 import "../../styles/game.css";
 
-function AnswerInput({ socket, user, users, answer, setAnswer }) {
-
+function AnswerInput({ socket, user, users, answer, setAnswer, answerRef }) {
     const handleSendAnswer = (e) => {
         e.preventDefault();
         console.log(
             "ANSWER_INPUT: Answer submitted: " + answer + " by " + user
         );
         socket.emit("answer_submitted", answer, user);
+        // Reset the answer input field to an empty string
     };
 
     return (

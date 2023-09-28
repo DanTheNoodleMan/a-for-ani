@@ -16,8 +16,8 @@ function RestartModal({socket, winner, users, room, handleRestart}) {
     };
 
     return (
-        <div className="vote-modal">
-            <div className="modal-content">
+        <div className="vote-modal restart-modal">
+            <div className="modal-content modal-restart">
                 {/* Display a loading message if all users haven't voted yet */}
                 {votedRestart ? (
                     <h1>Waiting for others to vote...</h1>

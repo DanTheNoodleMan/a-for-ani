@@ -103,7 +103,7 @@ function Game({ socket }) {
                     scoresRef.current[winningUser]
                 );
                 // Check if the winner has reached 9 points
-                if (scoresRef.current[winningUser] >= 3) {
+                if (scoresRef.current[winningUser] >= 9) {
                     gameOverRef.current = true;
                 }
 
@@ -194,6 +194,7 @@ function Game({ socket }) {
                 users={users}
                 answer={answer}
                 setAnswer={setAnswer}
+                answerRef={answerRef}
             />
         </div>
     );
