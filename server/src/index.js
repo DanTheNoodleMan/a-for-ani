@@ -359,7 +359,7 @@ io.on("connection", (socket) => {
             //Idenepent of the vote outcome, remove the answer from the list of answers
             //There was a bug where the answer was duplicated so by setting length to 0 it removes all the answers
             //We only need one answer so removing all of them is fine
-            myArray.length = 0;
+            answers.length = 0;
 
             console.log(voteResults);
             io.emit("vote_outcome", voteResults);
