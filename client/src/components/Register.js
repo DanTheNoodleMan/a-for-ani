@@ -13,8 +13,6 @@ function Register({ socket }) {
         setUsers,
         room,
         setRoom,
-        messages,
-        setMessages,
         userCount,
         setUserCount,
         usersReady,
@@ -25,7 +23,7 @@ function Register({ socket }) {
 
     useEffect(() => {
         const handleUserJoined = (userId) => {
-            setMessages([...messages, `User ${userId} joined room`]);
+            console.log(`User ${userId} joined room`);
         };
 
         socket.on("user_joined", handleUserJoined);
@@ -66,7 +64,7 @@ function Register({ socket }) {
         return () => {
             socket.off("user_joined", handleUserJoined);
         };
-    }, [messages, socket, userCount, setMessages, setUsers, setUserCount, setSocketToUser, setUsersReady]);
+    }, [socket, userCount, setUsers, setUserCount, setSocketToUser, setUsersReady]);
 
     const handleJoinRoom = () => {
         socket.emit("join_room", room, user);

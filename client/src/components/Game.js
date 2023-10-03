@@ -13,26 +13,7 @@ function Game({ socket }) {
     const [showRestartModal, setShowRestartModal] = useState(false); // Whether to show the restart modal
     const [winner, setWinner] = useState(""); // The winner of the game
 
-    const {
-        answer,
-        user,
-        answerUser,
-        users,
-        room,
-        messages,
-        userCount,
-        usersReady,
-        socketToUser,
-        setAnswerUser,
-        setAnswer,
-        setUser,
-        setUsers,
-        setRoom,
-        setMessages,
-        setUserCount,
-        setUsersReady,
-        setSocketToUser,
-    } = useAppContext(); // Use the context hook to access shared data
+    const { answer, user, users, room, setAnswer } = useAppContext(); // Use the context hook to access shared data
 
     const answerRef = useRef(""); // Use a ref to store answer
     const answerUserRef = useRef(""); // Use a ref to store answerUser
@@ -191,7 +172,6 @@ function Game({ socket }) {
             <AnswerInput
                 socket={socket}
                 user={user}
-                users={users}
                 answer={answer}
                 setAnswer={setAnswer}
                 answerRef={answerRef}

@@ -13,7 +13,6 @@ export function AppContextProvider({ children }) {
     const [user, setUser] = useState("");
     const [users, setUsers] = useState([]);
     const [room, setRoom] = useState("");
-    const [messages, setMessages] = useState([]);
     const [userCount, setUserCount] = useState(0);
     const [usersReady, setUsersReady] = useState([]);
     const [socketToUser, setSocketToUser] = useState({});
@@ -28,10 +27,8 @@ export function AppContextProvider({ children }) {
         setUsers,
         room,
         setRoom,
-        messages,
         setAnswerUser,
         setAnswer,
-        setMessages,
         userCount,
         setUserCount,
         usersReady,

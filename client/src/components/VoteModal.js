@@ -3,7 +3,7 @@ import "../styles/vote-modal.css";
 import { FaThumbsUp } from "react-icons/fa";
 import { FaThumbsDown } from "react-icons/fa";
 
-function VoteModal({ socket, answerRef, users, answerUserRef }) {
+function VoteModal({ socket, answerRef, users, answerUserRef, room }) {
     const [hasVoted, setHasVoted] = useState(false);
 
     const handleVote = (vote) => {
@@ -12,7 +12,7 @@ function VoteModal({ socket, answerRef, users, answerUserRef }) {
         console.log("Vote: " + vote);
         console.log("Users voting: " + users);
         console.log("answerUser: " + answerUserRef.current);
-        socket.emit("vote_submitted", vote, answerRef.current, users);
+        socket.emit("vote_submitted", vote, answerRef.current, users, room);
 
         setHasVoted(true); // Set hasVoted to true to prevent the player from voting again
     };

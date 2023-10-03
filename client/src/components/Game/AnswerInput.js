@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "../../styles/game.css";
 
-function AnswerInput({ socket, user, users, answer, setAnswer, answerRef }) {
+function AnswerInput({ socket, user, answer, setAnswer }) {
     const handleSendAnswer = (e) => {
         e.preventDefault();
         console.log(
