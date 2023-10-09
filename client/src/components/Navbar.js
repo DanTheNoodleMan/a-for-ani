@@ -12,15 +12,6 @@ const Navbar = ({ user }) => {
             <div className="navbar-links">
                 <ul>
                     <li className="user">{user}</li>
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-                    <li>
-                        <a href="/about">About</a>
-                    </li>
-                    <li>
-                        <a href="/contact">Contact</a>
-                    </li>
                 </ul>
             </div>
         </div>

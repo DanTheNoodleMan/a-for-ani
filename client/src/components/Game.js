@@ -7,6 +7,7 @@ import VoteModal from "./VoteModal";
 import Navbar from "./Navbar";
 import RestartModal from "./RestartModal";
 import { useAppContext } from "../AppContext"; // Import the context hook
+import { useNavigate } from "react-router-dom";
 
 function Game({ socket }) {
     const [showVoteModal, setShowVoteModal] = useState(false);
@@ -19,6 +20,8 @@ function Game({ socket }) {
     const answerUserRef = useRef(""); // Use a ref to store answerUser
     const scoresRef = useRef({}); // Use a ref to store scores
     const gameOverRef = useRef(false); // Use a ref to store gameOver
+
+    const navigate = useNavigate();
 
     const handleRandomLetter = (cardId) => {
         socket.emit("generate_letter", cardId);
@@ -109,12 +112,16 @@ function Game({ socket }) {
             handleRestart();
         });
 
+        socket.on("exit_game", () => {
+            navigate("/");
+        });
+
         return () => {
             socket.off("start_vote");
             socket.off("vote_outcome");
             socket.off("restart_game");
         };
-    }, [socket]);
+    }, [socket, navigate]);
 
     // Display Scores
     const renderScores = () => {

@@ -28,7 +28,7 @@ const io = new Server(httpServer, {
 // });
 
 // Variables to store data on the server
-const rooms = {}; // Object to store users in each room
+const usersInRoom = {}; // Object to store users in each room
 const ready = {}; // Object to store users' ready status
 const roomStates = {}; // Object to store the state of each room (whether it is in the lobby or in-game)
 const socketToUser = {}; // Object to store socket.id to username mapping
@@ -207,20 +207,6 @@ const resetVotesAndPlayersVoted = () => {
     playersVoted.clear();
 };
 
-const disconnectUsersAndDestroyRoom = (io, roomId) => {
-    // Get all connected sockets in the room
-    const roomSockets = io.sockets.adapter.rooms[roomId]?.sockets || {};
-
-    // Disconnect all users in the room
-    for (const socketId in roomSockets) {
-        io.sockets.sockets[socketId].leave(roomId); // Make the users leave the room
-    }
-
-    // Delete the room
-    delete io.sockets.adapter.rooms[roomId];
-};
-
-
 
 io.on("connection", (socket) => {
     console.log("User connected: ", socket.id);
@@ -230,7 +216,7 @@ io.on("connection", (socket) => {
         if (roomStates[roomId] && roomStates[roomId].gameStarted) {
             socket.emit("game_in_progress");
             return;
-        } else if (rooms[roomId] && rooms[roomId].length >= 4) {
+        } else if (usersInRoom[roomId] && usersInRoom[roomId].length >= 4) {
             socket.emit("room_full");
             return;
         } else {
@@ -239,10 +225,10 @@ io.on("connection", (socket) => {
         }
 
         // Add the user to the room on the server-side
-        if (!rooms[roomId]) {
-            rooms[roomId] = [];
+        if (!usersInRoom[roomId]) {
+            usersInRoom[roomId] = [];
         }
-        rooms[roomId].push(user);
+        usersInRoom[roomId].push(user);
 
         // Add the user to the socketToUser object
         socketToUser[socket.id] = user;
@@ -255,7 +241,7 @@ io.on("connection", (socket) => {
         // Send the list of users in the room to the newly joined user and updated readiness
         io.to(roomId).emit(
             "users_in_room",
-            rooms[roomId],
+            usersInRoom[roomId],
             socketToUser,
             ready[roomId]
         );
@@ -292,17 +278,25 @@ io.on("connection", (socket) => {
 
     socket.on("leave_room", (roomId, user) => {
         console.log("User left room: ", socket.id);
-        if (rooms[roomId]) {
+        if (usersInRoom[roomId]) {
             // Filter out the user from the room's user array
-            rooms[roomId] = rooms[roomId].filter(
+            usersInRoom[roomId] = usersInRoom[roomId].filter(
                 (roomUser) => roomUser !== user
             );
 
             //Remove the socket id to user mapping
             delete socketToUser[socket.id];
 
-            io.to(roomId).emit("user_left", rooms[roomId]);
+            io.to(roomId).emit("user_left", usersInRoom[roomId]);
         }
+
+        // Check if the room is empty
+        if (usersInRoom[roomId].length === 0) {
+            // Delete the room from the usersInRoom object
+            delete usersInRoom[roomId];
+            delete roomStates[roomId];
+        }
+
         socket.leave(roomId);
     });
 
@@ -319,8 +313,11 @@ io.on("connection", (socket) => {
 
     socket.on("generate_category", () => {
         let genCategory = [];
+        let catCopy = [...allCategories]; // Create a copy of the allCategories array
+
         for (let i = 0; i < 3; i++) {
-            genCategory.push(allCategories[randomIndex(allCategories)]);
+            genCategory.push(catCopy[randomIndex(catCopy)]);
+            catCopy.splice(catCopy.indexOf(genCategory[i]), 1); // Remove the category from the copy
         }
 
         console.log(genCategory);
@@ -390,7 +387,7 @@ io.on("connection", (socket) => {
                 io.emit("restart_game");
             } else {
                 // If the vote isn't unanimous, disconnect users and destroy the room
-                disconnectUsersAndDestroyRoom(io, room);
+                io.emit("exit_game");
             }
 
             // Reset the votes and playersVoted for the next vote
