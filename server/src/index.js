@@ -71,13 +71,13 @@ const allCategories = [
     "Colors",
     "Tools",
     "A Girl's Name",
-    "Villains/Monsters",
+    "Villains / Monsters",
     "Footwear",
     "Something You're Afraid Of",
     "Terms of Measurement",
     "Book Titles",
     "Heroes",
-    "Gifts/Presents",
+    "Gifts",
     "Kinds of Dances",
     "Things That Are Black",
     "Vehicles",
@@ -85,9 +85,9 @@ const allCategories = [
     "College Majors",
     "Dairy Products",
     "Things in a Souvenir Shop",
-    "Items in Your Purse/Wallet",
+    "Items in a Handbag",
     "Famous Females",
-    "Medicine/Drugs",
+    "Medicine / Drugs",
     "Things Made of Metal",
     "People in Uniform",
     "Things You Plug In",
@@ -115,7 +115,7 @@ const allCategories = [
     "Tourist Attractions",
     "Diet Foods",
     "Things Found in a Hospital",
-    "Food/Drink That Is Green",
+    "Food / Drink That Is Green",
     "Weekend Activities",
     "Seafood",
     "Christmas Songs",
@@ -161,6 +161,14 @@ const allCategories = [
     "Hobbies",
     "Holiday Activities",
     "European Capitals",
+    "Things That Are Square",
+    "Things That Have Claws",
+    "Ways to Relax",
+    "Things You Forget",
+    "Things That Are Hot",
+    "Music Genres",
+    "Things That Are Loud",
+    "Things in a Kitchen",
 ];
 
 const randomIndex = (array) => {
@@ -207,7 +215,6 @@ const resetVotesAndPlayersVoted = () => {
     playersVoted.clear();
 };
 
-
 io.on("connection", (socket) => {
     console.log("User connected: ", socket.id);
 
@@ -252,7 +259,14 @@ io.on("connection", (socket) => {
         if (!ready[roomId]) {
             ready[roomId] = [];
         }
-        ready[roomId].push(user);
+
+        if (!ready[roomId].includes(user)) {
+            ready[roomId].push(user);
+        } else {
+            // Remove the user from the ready array
+            const index = ready[roomId].indexOf(user);
+            ready[roomId].splice(index, 1);
+        }
 
         io.to(roomId).emit("users_ready", ready[roomId]);
     });

@@ -11,7 +11,7 @@
     position: relative;
     background: url(https://img.freepik.com/premium-photo/light-table-top-view-wood-texture-cream-shades-wooden-background_84485-2542.jpg?w=2000);
     display: grid;
-    grid-template-columns: 30% 40% 30%;
+    grid-template-columns: 25% 50% 25%;
     grid-template-rows: repeat(2, 1fr);
     align-items: center;
     justify-content: center;
@@ -50,16 +50,9 @@
 
 .categorycard {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     height: 100%;
     width: 100%;
-    box-sizing: border-box;
-    border-radius: 5px;
-    border: 2px solid #323232;
-    box-shadow: 4px 4px #323232;
+    display: flex;
 
     font-family: "Londrina Solid", cursive;
 }
@@ -70,16 +63,6 @@
     justify-content: center;
     height: 100%;
     font-family: "Londrina Solid", cursive;
-}
-
-.categorycard {
-    background-color: var(--primary);
-    flex: 1 1 0;
-    height: 100%;
-}
-
-.categorycard button {
-    z-index: 1;
 }
 
 .lettercard img {
@@ -101,11 +84,11 @@
 }
 
 .lettercard-1 {
-    transform: rotate(-90deg) translate(0, 50%);
+    transform: rotate(-90deg) translate(0,40%);
 }
 
 .lettercard-2 {
-    transform: rotate(90deg) translate(0, 50%);
+    transform: rotate(90deg) translate(0, 40%);
 }
 
 .mid {
@@ -113,46 +96,49 @@
     transform: rotate(180deg) translate(0, 10%);
 }
 
-.mid .letter{
+.mid .letter {
     text-decoration: underline;
-    text-decoration-color: #fff; 
-}
-
-.category-container {
-    z-index: 0;
-    display: flex;
-    flex: 1 1 0;
-    justify-content: center;
-    align-items: center;
-    gap: 1em;
-    text-align: center;
-    height: auto;
-    width: 100%;
+    text-decoration-color: #fff;
 }
 
 .category {
     font-size: 2.25em;
     font-weight: 600;
     color: #ffffff;
+    background-color: var(--primary);
     -webkit-text-stroke: #323232 1px;
     text-shadow: 2px 2px #323232;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 2px solid #323232;
+    box-shadow: 4px 4px #323232;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em;
+    flex: 1 1 1px;
 }
 
-.category-1 {
+.category-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 1px;
+    height: 100%;
+    gap: 2em;
+}
+
+.category p {
+    margin:0;
+    text-wrap:balance;
+}
+
+.category-1 p {
     rotate: 90deg;
-    height: 50%;
-    width: 50%;
 }
 
-.category-2 {
-    height: max-content;
-    width: max-content;
-}
-
-.category-3 {
+.category-3 p {
     rotate: -90deg;
-    height: 50%;
-    width: 50%;
 }
 
 /*/Chat Input/*/
@@ -242,7 +228,7 @@
 /*/Winner popup/*/
 .popup-notification {
     position: absolute;
-    top:20%;   
+    top: 20%;
     width: 20em;
     height: 10em;
     display: flex;
@@ -260,11 +246,11 @@
 
 .winner-text {
     font-size: 18px;
-    margin:20px;
+    margin: 20px;
     font-size: 1.5em;
 }
 
-.username{
+.username {
     font-family: "Londrina Solid", Arial, cursive;
     font-size: 1.25em;
 }
@@ -300,6 +286,6 @@
     }
 }
 
-.username{
+.username {
     font-family: "Londrina Solid", cursive;
 }

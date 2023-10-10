@@ -26,7 +26,7 @@ function CategoryCard({ socket, handleRandomCategory }) {
                         key={index}
                         className={`category category-${index + 1}`}
                     >
-                        {cat}
+                        <p>{cat}</p>
                     </div>
                 ))}
             </div>

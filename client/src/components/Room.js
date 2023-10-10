@@ -6,6 +6,7 @@ import cinnamon from "../assets/cinnamon.png";
 import pizza from "../assets/pizza.png";
 import burger from "../assets/burger.png";
 import { MdExitToApp } from "react-icons/md";
+import { FiCheck } from "react-icons/fi";
 
 const userIcons = [bagel, cinnamon, pizza, burger];
 const badgeColors = ["#fee440", "#00bbf9", "#00f5d4", "#f15bb5"];
@@ -20,7 +21,9 @@ function Room({ socket, userArray, room, count, ready, socketToUser }) {
             buttonStart.disabled = true;
         }
         // Check if all users are ready
-        const allUsersReady = userArray.every((user) => ready && ready.includes(user));
+        const allUsersReady = userArray.every(
+            (user) => ready && ready.includes(user)
+        );
 
         if (allUsersReady && count > 1) {
             buttonStart.disabled = false;
@@ -58,7 +61,7 @@ function Room({ socket, userArray, room, count, ready, socketToUser }) {
     return (
         <div className="content">
             <button className="leave" onClick={handleLeave}>
-                <MdExitToApp/>
+                <MdExitToApp />
             </button>
             <h1>
                 Room:{" "}
@@ -75,18 +78,32 @@ function Room({ socket, userArray, room, count, ready, socketToUser }) {
                             className="badge"
                             style={{ backgroundColor: badgeColors[index] }}
                         >
+                            <div
+                                className={
+                                    ready && ready.includes(user)
+                                        ? "ready-icon"
+                                        : ""
+                                }
+                            >
+                                {" "}
+                                {ready && ready.includes(user) ? (
+                                    <FiCheck />
+                                ) : (
+                                    ""
+                                )}
+                            </div>{" "}
                             <img src={userIcons[index]} alt="user icon" />
                         </div>
-                        {user} {ready && ready.includes(user) ? "(Ready)" : ""}
+                        {user}
                     </li>
                 ))}
             </ul>
             <div className="buttons">
-                <button className="ready" onClick={handleReady}>
+                <button className="ready-btn" onClick={handleReady}>
                     Ready
                 </button>
                 <button
-                    className="start"
+                    className="start-btn"
                     ref={startButtonRef}
                     onClick={handleStartGame}
                 >
